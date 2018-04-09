@@ -1,0 +1,94 @@
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+#define TAM 10
+
+using namespace std;
+
+class No{
+	public:
+		char info;
+		No *next;
+		
+		No(){
+			next = NULL;
+		}
+		No(char nInfo, No* nNext = NULL){
+			info = nInfo;
+			next = nNext;
+		}
+};
+class Pilha{
+	private:
+		No *head;
+		
+	public:
+		Pilha(){
+			head = NULL;
+		}
+		bool PilhaVazia();
+		void Pop();
+		void Push(char);
+		char Top();	
+};
+bool Pilha::PilhaVazia(){
+	return (head == NULL);
+}
+char Pilha::Top(){
+	if(!PilhaVazia())
+		return head -> info;
+}
+void Pilha::Push(char c){
+	if(PilhaVazia()){
+		No *novo = new No(c);
+		novo -> next = head;
+		head = novo;
+	} else{
+		No *temp = new No(c);
+		temp -> next = head;
+		head = temp;
+	}
+}
+void Pilha::Pop(){
+	if(PilhaVazia() != true){
+		char info = head -> info;
+		No *temp = head;
+		head = head -> next;
+		delete temp;
+	}
+}
+
+
+int main (){
+	Pilha p;
+	int t;
+	cin >> t;
+	
+	while (t--){
+		char a;
+		char arr[400];
+		cin >> arr;
+		int len = strlen(arr);
+		
+		for(int i = 0; i < len; i++){
+			if(arr[i] == '('){
+				p.Push(arr[i]);
+			}
+			else if (arr[i] == ')'){
+				while (p.Top() != '('){
+					cout << p.Top();
+					p.Pop();
+				}
+				p.Pop();
+			}
+			else if ((arr[i] == '+' || arr[i] == '-' ||arr[i] == '*' ||arr[i] == '/' ||arr[i] == '^' )){
+				p.Push(arr[i]);
+			}
+			else {
+				cout << arr[i];
+			}
+		}
+		cout << endl;
+	}
+	return 0;
+}
